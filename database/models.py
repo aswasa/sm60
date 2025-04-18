@@ -4,9 +4,7 @@ from sqlalchemy import (Column, Integer, String,
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import pytz
-
 tashkent_timezone = pytz.timezone("Asia/Tashkent")
-
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -18,7 +16,6 @@ class User(Base):
     password = Column(String)
     reg_date = Column(DateTime, default=datetime.now(tashkent_timezone))
     post_fk = relationship("Post", back_populates="users_fk")
-
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -29,13 +26,11 @@ class Post(Base):
     hashtags_fk = relationship("Hashtag", lazy="subquery")
     users_fk = relationship(User, lazy="subquery", back_populates="post_fk",
                             cascade="all, delete", passive_deletes=True)
-
 class Hashtag(Base):
     __tablename__ = "hashtags"
     id = Column(Integer, primary_key=True, autoincrement=True)
     hashtag_name = Column(String, unique=True)
     reg_date = Column(DateTime, default=datetime.now(tashkent_timezone))
-
 class Comment(Base):
     __tablename__ = 'comments'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -45,7 +40,6 @@ class Comment(Base):
     post_id = Column(Integer, ForeignKey('posts.id'))
     post_fk = relationship(Post, lazy="subquery")
     user_fk = relationship(User, lazy="subquery")
-
 class Photo(Base):
     __tablename__ = 'photos'
     id = Column(Integer, primary_key=True, autoincrement=True)
